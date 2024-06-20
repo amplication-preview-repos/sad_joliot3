@@ -1,0 +1,55 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Comment {
+  commenter String?
+  content   String?
+  createdAt DateTime             @default(now())
+  id        String               @id @default(cuid())
+  replies   EnumCommentReplies[]
+  updatedAt DateTime             @updatedAt
+}
+
+model BlogPost {
+  author     String?
+  categories EnumBlogPostCategories[]
+  content    String?
+  createdAt  DateTime                 @default(now())
+  id         String                   @id @default(cuid())
+  title      String?
+  updatedAt  DateTime                 @updatedAt
+}
+
+model Category {
+  createdAt   DateTime @default(now())
+  description String?
+  id          String   @id @default(cuid())
+  name        String?
+  updatedAt   DateTime @updatedAt
+}
+
+model User {
+  createdAt DateTime @default(now())
+  email     String?  @unique
+  firstName String?
+  id        String   @id @default(cuid())
+  lastName  String?
+  password  String
+  roles     Json
+  updatedAt DateTime @updatedAt
+  username  String   @unique
+}
+
+enum EnumCommentReplies {
+  Option1
+}
+
+enum EnumBlogPostCategories {
+  Option1
+}
